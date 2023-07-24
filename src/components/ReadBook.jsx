@@ -1,10 +1,13 @@
 // eslint-disable-next-line react/prop-types
-function ReadBook({ title, handleRemoveBook, id }) {
+function ReadBook({ img, title, handleRemoveBook, id }) {
 
   return (
     <>
-      <ul>
-        <li onClick={()=> handleRemoveBook(id)}>{title}</li>
+      <ul className="books">
+        <li onClick={()=> handleRemoveBook(id)}>
+          <img src={img} alt={title} width={200} height={300} />
+          {title}
+        </li>
       </ul>
     </>
   )

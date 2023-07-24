@@ -1,16 +1,13 @@
 // eslint-disable-next-line react/prop-types
-function Book({ title, img, handleAddBook, id }) {
-
-  console.log(img)
+export default function Book({ title, img, handleAddBook, id }) {
 
   return (
     <>
-      <ul>
-        <li onClick={()=> handleAddBook(id)}>{title}</li>
-        <img src={img} alt={title} width={200} height={300} />
+      <ul className="books">
+        <li onClick={()=> handleAddBook(id)}>{title}
+          <img src={img} alt={title} width={200} height={300} />
+        </li>
       </ul>
     </>
   )
 }
-
-export default Book

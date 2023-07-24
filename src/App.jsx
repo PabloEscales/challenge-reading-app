@@ -1,62 +1,38 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
-import data from '../public/data'
-import Book from './components/Book'
-import ReadBook from './components/ReadBook'
+import data from './services/data'
+import Books from './components/Books'
+import Header from './components/Header'
+import { useFilters } from './hooks/useFilters'
 
 function App() {
-
   const INITIAL_STATE = data.library
 
-  const [books, setBooks] = useState([])
+  const { filterBooks, setFilters } = useFilters()
+
+  const [books, setBooks] = useState(INITIAL_STATE)
   const [list, setList] = useState([])
 
-  useEffect (() => {
-    setBooks(INITIAL_STATE)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const handleAddBook = (id) => {
-    const bookSelected = books.filter((item) => item.book.ISBN === id)
+    const bookSelected = books.filter((book) => book.id === id)
     setList([...list, bookSelected[0]])
-    setBooks(books.filter((item) => item.book.ISBN !== id))
+    setBooks(books.filter((book) => book.id !== id))
   }
 
   const handleRemoveBook = (id) => {
-    const bookSelected = list.filter((item) => item.book.ISBN === id)
+    const bookSelected = list.filter((book) => book.id === id)
     setBooks([...books, bookSelected[0]])
-    setList(list.filter((item) => item.book.ISBN !== id))
+    setList(list.filter((book) => book.id !== id))
   }
 
+  const filteredBooks = filterBooks(books)
+
   return (
-    <main className='App'>
-      <section>
-        <strong>
-          Libros disponibles: {books.length}
-        </strong>
-        {
-          books.map(
-            (item) => (
-            <Book key={item.book.ISBN} title={item.book.title} img={item.book.cover} id={item.book.ISBN} handleAddBook={handleAddBook} />)
-          )
-        }
-      </section>
-      <section>
-        <strong>
-          List de lectura: {list.length}
-          {
-            list.map(
-              (item) => (
-               <ReadBook key={item.book.ISBN} title={item.book.title} id={item.book.ISBN} handleRemoveBook={handleRemoveBook} />)
-            )
-          }
-        </strong>
-      </section>
-    </main>
+    <>
+      <Header changeFilters={setFilters} />
+      <Books filteredBooks={filteredBooks} list={list} handleAddBook={handleAddBook} handleRemoveBook={handleRemoveBook} />
+    </>
   )
 }
 
 export default App
-
-
-// const bookSelected = books.filter((item) => item.book.ISBN === id)
